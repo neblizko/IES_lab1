@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace lab1._1
 {
     public class Program
     {
 
-        public const int HARMONICS_NUMBER = 12;
+        public const int HARMONICS_NUMBER = 12; 
         public const int BORDER_FREQUENCY = 1800;
         public const int CALLS_NUMBER = 64;
 
         static void Main()
         {
-            Console.WriteLine("Program started");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
@@ -53,6 +52,7 @@ namespace lab1._1
             for (int i = 1; i <= HARMONICS_NUMBER; i++) {
                 double frequency = (i*BORDER_FREQUENCY) / HARMONICS_NUMBER;
                 double amplitude = rand.NextDouble();
+                Thread.Sleep(25); // to refresh random seed
                 double phase = rand.NextDouble();
                 for(int time = 0; time < CALLS_NUMBER; time++)
                 {
@@ -61,10 +61,53 @@ namespace lab1._1
                 }
             }
             
-            Console.WriteLine(signals);
             return signals;
         }
 
 
+        public static double[] corFunc(double[] x, double[] y)
+        {
+            double[] corValues = new double[CALLS_NUMBER/2];
+            double avgX = x.Average();
+            double avgY = y.Average();
+            double stdevX = Math.Sqrt(calculateD(avgX, x));
+
+            int half = CALLS_NUMBER / 2;
+            double v, m, std;
+            for(int i = 0; i<half; i++)
+            {
+                v = 0;
+                for(int j = 0;j< x.Length-i; j++)
+                {
+                    v += x[j] * y[j + i];
+                    m = y.Average();
+                    std = Math.Sqrt(calculateD(avgY,y));
+                    corValues[i] = (v / (x.Length - i) - avgX * m) / (stdevX * std);
+                }
+            }
+
+
+            return corValues;
+        }
+
+        public static double[] autoCorFunc(double [] signals)
+        {
+            return corFunc(signals, signals);
+        }
+
+        public static double[] complexity()
+        {
+            double[] time = new double[CALLS_NUMBER];
+            Stopwatch sw = new Stopwatch();
+
+            for (int i = 0; i < CALLS_NUMBER; i++)
+            {
+                sw.Start();
+                generateSignal(i, HARMONICS_NUMBER, BORDER_FREQUENCY);
+                sw.Stop();
+                time[i] = sw.ElapsedMilliseconds/100;
+            }
+            return time;
+        }
     }
 }
