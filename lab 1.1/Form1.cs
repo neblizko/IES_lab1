@@ -27,10 +27,12 @@ namespace lab1._1
             double[] cor = Program.corFunc(s, copyS);
             double[] autocor = Program.autoCorFunc(s);
             double[] time = Program.complexity();
-            fillForm(s, copyS, cor, autocor, M, D, time);
+            double[] timeList = Program.complexityList();
+
+            fillForm(s, copyS, cor, autocor, M, D, time, timeList);
         }
 
-        public void fillForm(double[] s, double[] copyS, double[] cor, double[] autocor, double M, double D, double[] time)
+        public void fillForm(double[] s, double[] copyS, double[] cor, double[] autocor, double M, double D, double[] time, double[] timeList)
         {
 
             Console.WriteLine("[{0}]", string.Join(", ", time));
@@ -42,6 +44,7 @@ namespace lab1._1
                 chart1.Series["Signal"].Points.AddXY(i, s[i]);
                 chart1.Series["Signal copy"].Points.AddXY(i, copyS[i]);
                 chart2.Series["Complexity"].Points.AddXY(i, time[i]);
+                chart2.Series["Complexity (list)"].Points.AddXY(i, timeList[i]);
 
             }
 

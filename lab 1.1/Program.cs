@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace lab1._1
 {
@@ -64,6 +65,27 @@ namespace lab1._1
             return signals;
         }
 
+        public static List<double> generateSignalList(int CALLS_NUMBER, int HARMONICS_NUMBER, int BORDER_FREQUENCY)
+        {
+            List<double> signals = new List<double> {};
+            var rand = new Random();
+
+            for (int i = 1; i <= HARMONICS_NUMBER; i++)
+            {
+                double frequency = (i * BORDER_FREQUENCY) / HARMONICS_NUMBER;
+                double amplitude = rand.NextDouble();
+                Thread.Sleep(25); // to refresh random seed
+                double phase = rand.NextDouble();
+                for (int time = 0; time < CALLS_NUMBER; time++)
+                {
+                    double signal = amplitude * Math.Sin((frequency * time) + phase);
+                    signals.Add(signal);
+                }
+            }
+
+            return signals;
+        }
+
 
         public static double[] corFunc(double[] x, double[] y)
         {
@@ -106,6 +128,21 @@ namespace lab1._1
                 generateSignal(i, HARMONICS_NUMBER, BORDER_FREQUENCY);
                 sw.Stop();
                 time[i] = sw.ElapsedMilliseconds/100;
+            }
+            return time;
+        }
+
+        public static double[] complexityList()
+        {
+            double[] time = new double[CALLS_NUMBER];
+            Stopwatch sw = new Stopwatch();
+
+            for (int i = 0; i < CALLS_NUMBER; i++)
+            {
+                sw.Start();
+                generateSignalList(i, HARMONICS_NUMBER, BORDER_FREQUENCY);
+                sw.Stop();
+                time[i] = sw.ElapsedMilliseconds / 100;
             }
             return time;
         }
