@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace lab1._1
 {
@@ -22,39 +23,45 @@ namespace lab1._1
 
             double[] s = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
             double[] copyS = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
+            double[] copyS2 = s;
             double M = Program.calculateM(s);
             double D = Program.calculateD(M, s);
             double[] cor = Program.corFunc(s, copyS);
             double[] autocor = Program.autoCorFunc(s);
             double[] time = Program.complexity();
-            double[] timeList = Program.complexityList();
+            double[] dft = Program.DFT(copyS2);
 
-            fillForm(s, copyS, cor, autocor, M, D, time, timeList);
+            Complex[] A = Program.fft(copyS2, 6);
+            //Console.WriteLine("[{0}]", string.Join(", ", A));
+            double[] AA = Program.cTor(A);
+            //Console.WriteLine("[{0}]", string.Join(", ", AA));
+
+            fillForm(s, copyS, cor, autocor, M, D, time, dft, Program.cTor(A));
         }
 
-        public void fillForm(double[] s, double[] copyS, double[] cor, double[] autocor, double M, double D, double[] time, double[] timeList)
+        public void fillForm(double[] s, double[] copyS, double[] cor, double[] autocor, double M, double D, double[] time, double[] dft, double[] fft)
         {
 
-            Console.WriteLine("[{0}]", string.Join(", ", time));
+            
 
 
             for (int i = 0; i < s.Length; i++)
             {
 
                 chart1.Series["Signal"].Points.AddXY(i, s[i]);
-                chart1.Series["Signal copy"].Points.AddXY(i, copyS[i]);
-                chart2.Series["Complexity"].Points.AddXY(i, time[i]);
-                chart2.Series["Complexity (list)"].Points.AddXY(i, timeList[i]);
+                //chart1.Series["Signal copy"].Points.AddXY(i, copyS[i]);
+                chart2.Series["dft"].Points.AddXY(i, dft[i]);
+                //chart2.Series["Complexity (list)"].Points.AddXY(i, fft[i]);
+                chart4.Series["fft"].Points.AddXY(i, fft[i]);
 
             }
 
-            for (int i = 0; i<cor.Length; i++)
-            {
-                chart3.Series["cor"].Points.AddXY(i, cor[i]);
-                chart4.Series["autocor"].Points.AddXY(i, autocor[i]);
-            }
-            m_value.Text = M.ToString();
-            d_value.Text = D.ToString();
+            //for (int i = 0; i<cor.Length; i++)
+            //{
+            //    chart3.Series["cor"].Points.AddXY(i, cor[i]);
+            //}
+            //m_value.Text = M.ToString();
+            //d_value.Text = D.ToString();
 
         }
     }
