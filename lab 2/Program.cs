@@ -20,33 +20,6 @@ namespace lab1._1
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
-        
-        public static double calculateM(double[] arr)
-        {
-            double sum = 0;
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                sum += arr[i];
-            }
-
-            return sum / arr.Length;
-        }
-
-        public static double calculateD(double M, double[] arr)
-        {
-            double sum = 0;
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                sum += ((arr[i] - M) * (arr[i] - M));
-            }
-
-            return sum / (arr.Length - 1);
-        }
-
-     
-
         public static double[] generateSignal(int CALLS_NUMBER, int HARMONICS_NUMBER, int BORDER_FREQUENCY)
         {
             double[] signals = new double[CALLS_NUMBER];
@@ -67,53 +40,9 @@ namespace lab1._1
             return signals;
         }
 
-        public static double[] corFunc(double[] x, double[] y)
-        {
-            double[] corValues = new double[CALLS_NUMBER/2];
-            double avgX = x.Average();
-            double avgY = y.Average();
-            double stdevX = Math.Sqrt(calculateD(avgX, x));
-
-            int half = CALLS_NUMBER / 2;
-            double v, m, std;
-            for(int i = 0; i<half; i++)
-            {
-                v = 0;
-                for(int j = 0;j< x.Length-i; j++)
-                {
-                    v += x[j] * y[j + i];
-                    m = y.Average();
-                    std = Math.Sqrt(calculateD(avgY,y));
-                    corValues[i] = (v / (x.Length - i) - avgX * m) / (stdevX * std);
-                }
-            }
-            return corValues;
-        }
-
-        public static double[] autoCorFunc(double [] signals)
-        {
-            return corFunc(signals, signals);
-        }
-
-        public static double[] complexity()
-        {
-            double[] time = new double[CALLS_NUMBER];
-            Stopwatch sw = new Stopwatch();
-
-            for (int i = 0; i < CALLS_NUMBER; i++)
-            {
-                sw.Start();
-                generateSignal(i, HARMONICS_NUMBER, BORDER_FREQUENCY);
-                sw.Stop();
-                time[i] = sw.ElapsedMilliseconds/100;
-            }
-            return time;
-        }
-
-
         // LAB 2
 
-        public static double[] DFT(double[] data)
+        public static double[] dft(double[] data)
         {
             int n = data.Length;
             int m = n;
@@ -163,11 +92,11 @@ namespace lab1._1
             return n;
         }
 
-        public static Complex[] fft(double[] a, int log2n)
+        public static Complex[] fft(double[] a, int log2n, int N)
         {
-            Complex[] A = new Complex[64];
+            Complex[] A = new Complex[N];
 
-            int n = 64;
+            int n = N;
 
             for (int i = 0; i < n; ++i)
             {
@@ -203,6 +132,39 @@ namespace lab1._1
             return A;
     }
 
+        public static double[,] complexity()
+        {
+            double[,] res = new double[10, 10];
 
-}
+            for (int i = 1; i < 11; i++)
+            {
+                double[] signal = generateSignal((int)Math.Pow(2, i), HARMONICS_NUMBER, BORDER_FREQUENCY);
+                res[0, i -1] = TimeMethodDft(signal);
+                res[1, i-1] = TimeMethodFft(signal, i, (int)Math.Pow(2, i));
+                Console.WriteLine(res[0, i-1]);
+
+            }
+
+            return res;
+        }
+
+        private static long TimeMethodDft(double[] param)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            dft(param);
+            stopwatch.Stop();
+            return stopwatch.ElapsedTicks/1000;
+        }
+
+        private static long TimeMethodFft(double[] param, int log2n, int N)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            fft(param, log2n, N);
+            stopwatch.Stop();
+
+            return stopwatch.ElapsedTicks;
+        }
+    }
 }

@@ -22,47 +22,31 @@ namespace lab1._1
         {
 
             double[] s = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
-            double[] copyS = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
             double[] copyS2 = s;
-            double M = Program.calculateM(s);
-            double D = Program.calculateD(M, s);
-            double[] cor = Program.corFunc(s, copyS);
-            double[] autocor = Program.autoCorFunc(s);
-            double[] time = Program.complexity();
-            double[] dft = Program.DFT(copyS2);
+            double[] dft = Program.dft(copyS2);
+            Complex[] fft = Program.fft(copyS2, 6, 64);
+            double[,] time = Program.complexity();
 
-            Complex[] A = Program.fft(copyS2, 6);
-            //Console.WriteLine("[{0}]", string.Join(", ", A));
-            double[] AA = Program.cTor(A);
-            //Console.WriteLine("[{0}]", string.Join(", ", AA));
-
-            fillForm(s, copyS, cor, autocor, M, D, time, dft, Program.cTor(A));
+            fillForm(s, dft, Program.cTor(fft), time);
         }
 
-        public void fillForm(double[] s, double[] copyS, double[] cor, double[] autocor, double M, double D, double[] time, double[] dft, double[] fft)
+        public void fillForm(double[] s, double[] dft, double[] fft, double[,] time)
         {
-
-            
-
-
             for (int i = 0; i < s.Length; i++)
             {
 
                 chart1.Series["Signal"].Points.AddXY(i, s[i]);
-                //chart1.Series["Signal copy"].Points.AddXY(i, copyS[i]);
                 chart2.Series["dft"].Points.AddXY(i, dft[i]);
-                //chart2.Series["Complexity (list)"].Points.AddXY(i, fft[i]);
                 chart4.Series["fft"].Points.AddXY(i, fft[i]);
 
             }
 
-            //for (int i = 0; i<cor.Length; i++)
-            //{
-            //    chart3.Series["cor"].Points.AddXY(i, cor[i]);
-            //}
-            //m_value.Text = M.ToString();
-            //d_value.Text = D.ToString();
+            for (int i = 1; i < 11; i++)
+            {
+                chart3.Series["dft time"].Points.AddXY(Math.Pow(2, i), time[0, i - 1]);
+                chart3.Series["fft time"].Points.AddXY(Math.Pow(2, i), time[1, i - 1]);
 
+            }
         }
     }
 }

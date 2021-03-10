@@ -37,9 +37,10 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
@@ -101,12 +102,11 @@
             // 
             // chart3
             // 
-            chartArea3.AxisX.Interval = 100D;
             chartArea3.AxisX.IsMarksNextToAxis = false;
-            chartArea3.AxisX.Maximum = 33D;
-            chartArea3.AxisX.Minimum = 0D;
-            chartArea3.AxisY.Maximum = 1D;
-            chartArea3.AxisY.Minimum = -1D;
+            chartArea3.AxisX.Maximum = 1024D;
+            chartArea3.AxisX.Minimum = 2D;
+            chartArea3.AxisY.Maximum = 2000D;
+            chartArea3.AxisY.Minimum = 0D;
             chartArea3.Name = "ChartArea1";
             this.chart3.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
@@ -116,9 +116,14 @@
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             series3.Legend = "Legend1";
-            series3.Name = "Series1";
+            series3.Name = "dft time";
             series3.YValuesPerPoint = 2;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Legend = "Legend1";
+            series4.Name = "fft time";
             this.chart3.Series.Add(series3);
+            this.chart3.Series.Add(series4);
             this.chart3.Size = new System.Drawing.Size(599, 348);
             this.chart3.TabIndex = 0;
             this.chart3.Text = "chart1";
@@ -146,12 +151,12 @@
             this.chart4.Legends.Add(legend4);
             this.chart4.Location = new System.Drawing.Point(12, 366);
             this.chart4.Name = "chart4";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series4.Legend = "Legend1";
-            series4.Name = "fft";
-            series4.YValuesPerPoint = 2;
-            this.chart4.Series.Add(series4);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series5.Legend = "Legend1";
+            series5.Name = "fft";
+            series5.YValuesPerPoint = 2;
+            this.chart4.Series.Add(series5);
             this.chart4.Size = new System.Drawing.Size(581, 348);
             this.chart4.TabIndex = 0;
             this.chart4.Text = "chart1";
