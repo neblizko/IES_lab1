@@ -22,9 +22,10 @@ namespace lab1._1
 
             double[] s = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
             double[] copyS = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
-            double M = Program.calculateM(s);
-            double D = Program.calculateD(M, s);
-            double[] cor = Program.corFunc(s, copyS);
+            double[] d = new double[4] { 8.0, 4.0, 0, 6.0};
+            double M = Program.calculateM(d);
+            double D = Program.calculateD(M, d);
+            double[] cor = Program.corFunc(d, d);
             double[] autocor = Program.autoCorFunc(s);
             double[] time = Program.complexity();
             double[] timeList = Program.complexityList();

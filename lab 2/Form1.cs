@@ -23,11 +23,12 @@ namespace lab1._1
 
             double[] s = Program.generateSignal(Program.CALLS_NUMBER, Program.HARMONICS_NUMBER, Program.BORDER_FREQUENCY);
             double[] copyS2 = s;
-            double[] dft = Program.dft(copyS2);
+            double[] d = new double[4] {8.0, 4.0, 0, 6.0};
+            double[] dft = Program.dft(d);
             Complex[] fft = Program.fft(copyS2, 6, 64);
             double[,] time = Program.complexity();
 
-            fillForm(s, dft, Program.cTor(fft), time);
+            fillForm(d, dft, Program.cTor(fft), time);
         }
 
         public void fillForm(double[] s, double[] dft, double[] fft, double[,] time)

@@ -12,7 +12,7 @@ namespace lab1._1
 
         public const int HARMONICS_NUMBER = 12; 
         public const int BORDER_FREQUENCY = 1800;
-        public const int CALLS_NUMBER = 64;
+        public const int CALLS_NUMBER = 4;
 
         static void Main()
         {
