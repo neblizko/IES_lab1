@@ -191,6 +191,11 @@ namespace lab3
 
             while (end - start < time)
             {
+                if(end-start < 10)
+                {
+                    max += (new Random().Next(-5, 5))/10;
+                    continue;
+                }
                 Console.WriteLine(end-start + " " + time);
                 double allSurvival = 0;
 
